@@ -18,7 +18,7 @@ MQ135: This sensor is excellent for measuring air quality by detecting gases lik
 By combining these sensors, we can measure temperature, humidity, detect harmful gases, and assess overall air quality in the environment.
 
 
-# 1. DHT11 (Temperature & Humidity Sensor):
+## 1. DHT11 (Temperature & Humidity Sensor):
 Pins:
 
 VCC: Connect to 5V on the microcontroller.
@@ -27,7 +27,7 @@ GND: Connect to the ground (GND).
 
 Data: Connect to a digital input pin (e.g., D2). Use a 10k pull-up resistor between Data and VCC.
 
-#  2. MQ9 (Gas Sensor for CO & Combustible Gases):
+##  2. MQ9 (Gas Sensor for CO & Combustible Gases):
 Pins:
 
 VCC: Connect to 5V on the microcontroller.
@@ -38,7 +38,7 @@ AO (Analog Output): Connect to an analog input pin (e.g., A0) for gas concentrat
 
 DO (Digital Output): Optionally connect to a digital pin if you want threshold-based output (set using the onboard potentiometer).
 
-#  3. MQ135 (Air Quality Sensor):
+##  3. MQ135 (Air Quality Sensor):
 Pins:
 
 VCC: Connect to 5V on the microcontroller.
