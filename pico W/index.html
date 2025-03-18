@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sensor Data Dashboard</title>
+    <!-- Include Bootstrap for better styling -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Include FontAwesome for icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <!-- Include Chart.js for graphs -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fa;
+            color: #333;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            border-radius: 10px;
+            border: none;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: white;
+        }
+
+        .card-header {
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            font-size: 24px;
+            padding: 15px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        .card-body {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .sensor-data {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .sensor-data p {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .sensor-data .card {
+            flex: 1;
+            min-width: 250px;
+            margin: 10px;
+        }
+
+        .chart-container {
+            margin-top: 40px;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            font-size: 14px;
+            color: #777;
+        }
+
+        #sensorChart {
+            width: 100%;
+            height: 400px;
+            border-radius: 10px;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+            transition: 0.3s;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .gauge-chart {
+            width: 100%;
+            height: 250px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1>Real-Time Sensor Data</h1>
+            <p>Live data from your sensors</p>
+        </div>
+
+        <!-- Sensor Data Display -->
+        <div class="row sensor-data">
+            <div class="col-lg-3 col-md-6 col-sm-12 mb-3">
+                <div class="card shadow-sm">
+                    <div class="card-header">
+                        <i class="fas fa-thermometer-half"></i> Temperature
+                    </div>
+                    <div class="card-body">
+                        <p><strong id="temp">{{ temp }} °C</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-sm-12 mb-3">
+                <div class="card shadow-sm">
+                    <div class="card-header">
+                        <i class="fas fa-tint"></i> Humidity
+                    </div>
+                    <div class="card-body">
+                        <p><strong id="hum">{{ hum }} %</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-sm-12 mb-3">
+                <div class="card shadow-sm">
+                    <div class="card-header">
+                        <i class="fas fa-gas-pump"></i> MQ9 Voltage
+                    </div>
+                    <div class="card-body">
+                        <p><strong id="mq9_voltage">{{ mq9_voltage }} V</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-sm-12 mb-3">
+                <div class="card shadow-sm">
+                    <div class="card-header">
+                        <i class="fas fa-gas-pump"></i> MQ135 Voltage
+                    </div>
+                    <div class="card-body">
+                        <p><strong id="mq135_voltage">{{ mq135_voltage }} V</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chart Section -->
+        <div class="chart-container">
+            <h2>Sensor Data Chart</h2>
+            <canvas id="sensorChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2025 Your Company. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Update the sensor data chart
+        var ctx = document.getElementById('sensorChart').getContext('2d');
+        var sensorChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Temperature', 'Humidity', 'MQ9 Voltage', 'MQ135 Voltage'],
+                datasets: [{
+                    label: 'Sensor Readings',
+                    data: [0, 0, 0, 0], // Initial data
+                    borderColor: 'rgb(75, 192, 192)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            precision: 2
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    }
+                }
+            }
+        });
+
+        // Function to update the graph and data
+        function updateSensorData() {
+            fetch('/sensor-data')
+                .then(response => response.json())
+                .then(data => {
+                    // Update the graph data
+                    sensorChart.data.datasets[0].data = [
+                        data.temp, 
+                        data.hum, 
+                        data.mq9_voltage, 
+                        data.mq135_voltage
+                    ];
+                    sensorChart.update();
+
+                    // Update the displayed sensor values
+                    document.getElementById('temp').innerText = `${data.temp} °C`;
+                    document.getElementById('hum').innerText = `${data.hum} %`;
+                    document.getElementById('mq9_voltage').innerText = `${data.mq9_voltage} V`;
+                    document.getElementById('mq135_voltage').innerText = `${data.mq135_voltage} V`;
+                });
+        }
+
+        // Update the sensor data every 5 seconds
+        setInterval(updateSensorData, 5000);
+
+        // Initial data load
+        updateSensorData();
+    </script>
+
+    <!-- Include Bootstrap JS (Optional) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
