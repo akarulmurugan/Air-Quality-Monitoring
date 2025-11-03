@@ -53,3 +53,5 @@ DO (Digital Output): Optionally connect to a digital pin for threshold-based out
 Create a new file called ‘main.py’ (it is important that you name it like this, otherwise CircuitPython won’t find it) and copy the code into it. As soon as you save the file the code will be executed.
 To check the outputs use Mu to open a serial connection. If you are on Linux you can also use minicom (‘sudo minicom -o -D /dev/ttyACM0’).
 You can check if your sensors are working by simply blowing on them. This should raise the CO2 and TVOC readings.
+#Youtube Video Link
+https://youtu.be/MvmRp9HndhY?feature=shared
